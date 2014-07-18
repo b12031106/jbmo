@@ -1,6 +1,6 @@
 # jbmo
 
-### a super normal modal plugin depend on jQuery
+### a super normal javascript modal plugin depend on jQuery
 
 ### Step by Step
 
@@ -15,15 +15,15 @@
 <link type="text/css" rel="stylesheet" href="jbmo.css">
 ```
 
-#### Then use jbmo like a boss
+#### Then use jbmo LIKE A BOUSE
 
 ```js
 
 // create jbmo modal object
-var likeaboss = $.jbmo.create("I am like a BOSS!");
+var likeabouse = $.jbmo.create("LIKE A BOUSE");
 
-// and show it on your screen like a boss
-likeaboss.show();
+// and show it on your screen LIKE A BOUSE
+likeabouse.show();
 
 ```
 
@@ -31,26 +31,26 @@ likeaboss.show();
 
 ```js
 
-var likeaboss = $.jbmo.create("LIKE A BOSS!", {
+var likeabouse = $.jbmo.create("LIKE A BOUSE", {
 
-	// decide jbmo will generate a close button or not
+	// decide jbmo modal will generate a close button or not
 	closeButton: true,
 
-	// decide modal will close by click on black mask or not
+	// decide jbmo modal will close by click on black mask or not
 	modalLock: false,
 
-	// do something when modal is show
+	// do something when jbmo modal is show
 	onShow: function () {
 		// do something...
 	},
 
-	// do something when modal is close
+	// do something when jbmo modal is close
 	onClose: function () {
 		// do something...
 	},
 
-	// will add this classname on jbmo container
-	containerClassname: "likeaboss" 
+	// will add this classname on jbmo modal container
+	containerClassname: "LIKEABOUSE" 
 });
 
 ```
@@ -60,18 +60,18 @@ var likeaboss = $.jbmo.create("LIKE A BOSS!", {
 ```js
 
 // create a jbmo object by $.jbmo.create, you can create by element, string or jQuery object
-var likeabossSTRING = $.jbmo.create("I am a string");
-var likeabossELEMENT = $.jbmo.create(document.getElementById("like-a-boss"));
-var likeabossJQUERY = $.jbmo.create($(".like-a-BOSS"));
+var likeabouseSTRING = $.jbmo.create("I am a string... but LIKE A BOUSE");
+var likeabouseELEMENT = $.jbmo.create(document.getElementById("like-a-bouse"));
+var likeabouseJQUERY = $.jbmo.create($(".like-a-BOUSE"));
 
 // use .show() to show modal
-likeabossSTRING.show();
+likeabouseSTRING.show();
 
 // use .close() to close modal
-likeabossSTRING.close();
+likeabouseSTRING.close();
 
 // use .destroy() to destroy jbmo object
-likeabossSTRING.destroy();
+likeabouseSTRING.destroy();
 
 ```
 
