@@ -44,6 +44,11 @@ var likeabouse = $.jbmo.create("LIKE A BOUSE", {
 		// do something...
 	},
 
+	// do something when jbmo modal is destroy
+	onDestroy: function () {
+		// do something...
+	},
+
 	// do something when jbmo modal is close
 	onClose: function () {
 		// do something...

@@ -48,13 +48,14 @@ $(function () {
                     closeButton: true,
                     modalLock: false,
                     onShow: null,
+                    onDestroy: null,
                     onClose: null,
                     containerClassname: ""
                 },
                 _$container = null,
                 _setting = $.extend(true, _defaultSetting, setting);
 
-            // make a conainer
+            // make a container
             var container = document.createElement("div");
             container.className = _containerClassname + " " + _setting.containerClassname;
             if (_setting.closeButton) {
@@ -100,6 +101,10 @@ $(function () {
                     _jbmos = $.grep(_jbmos, function (_api, _index) {
                         return _api !== api;
                     });
+
+                    if (typeof _setting.onDestroy == "function") {
+                        _setting.onDestroy();
+                    }
 
                     if (!_getActivedContainers().length) {
                         _closeModal();
