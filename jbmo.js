@@ -118,10 +118,24 @@ $(function () {
             return _jbmos;
         },
 
+        // show all modal
+        showAll: function () {
+            $(_jbmos).each(function () {
+                this.show();
+            });
+        },
+
         // close all modal
         closeAll: function (closeByModal) {
             $(_jbmos).each(function () {
                 this.close(closeByModal);
+            });
+        },
+
+        // destroy all modal
+        destroyAll: function () {
+            $(_jbmos).each(function () {
+                this.destroy();
             });
         }
 

@@ -82,8 +82,14 @@ likeabouseSTRING.destroy();
 // this will return all created jbmo objects
 var allJbmos = $.jbmo.getAll();
 
+// this will show all jbmo modal
+$.jbmo.showAll();
+
 // this will close all jbmo modal
 $.jbmo.closeAll();
+
+// this will destroy all jbmo modal
+$.jbmo.destroyAll();
 
 ```
 
