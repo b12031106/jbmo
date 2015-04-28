@@ -1,151 +1,194 @@
-(function($, window, document) {
+(function(window, document) {
 
 "use strict";
 
-$(function () {
+if (typeof window.jbmo != "undefined") {
+    return;
+}
 
-    if (typeof $.jbmo !== "undefined") {
-        return;
+var _addEvent = (function () {
+    var _elem = document.createElement("div");
+    if (_elem.addEventListener) {
+        return function (event, elem, func) {
+            elem.addEventListener(event, func, false);
+        };
+    } else if (_elem.attachEvent) {
+        return function (event, elem, func) {
+            elem.attachEvent("on" + event, func);
+        };
     }
+}());
 
+var _classExp = function (className) {
+    return new RegExp("(^|\\b)" + className + "(\\b|$)", "ig");
+};
+
+var _addClass = function (elem, className) {
+    if (!elem.className.match(_classExp(className))) {
+        elem.className += " "  + className;
+    }
+};
+
+var _removeClass = function (elem, className) {
+    elem.className = elem.className.replace(_classExp(className), "");
+};
+
+var _extend = function (object1, object2) {
+    var _newObject = {};
+    for (var i in object1) {
+        if (typeof object2 != "undefined" && typeof object2[i] != "undefined") {
+            _newObject[i] = object2[i];
+        } else {
+            _newObject[i] = object1[i];
+        }
+    }
+    return _newObject;
+};
+
+var _domReady = function (func) {
+    _addEvent("readystatechange", document, function () {
+        if (document.readyState === "interactive") {
+            func();
+        }
+    });
+};
+
+var _init = function () {
     // variables
     var _jbmos = [],
-        _version = "0.0.1",
         _activeClassname = "actived",
         _noScrollClassname = "jbmo-noscroll",
         _modalIdName = "jbmo-modal",
         _containerClassname = "jbmo-container",
         _closeButtonClassname = "jbmo-close",
         _modalLockClassname = "jbmo-lock",
-        _$body = $("body"),
-        _$modal = $("#" + _modalIdName);
+        _bodyElem = document.body,
+        _modalElem = document.createElement("div");
 
     // create modal element
-    _$modal = $(document.createElement("div")).attr("id", _modalIdName).appendTo("body");
-    _$modal.click(function (event) {
-        if (event.target == _$modal.get(0)) {
-            $.jbmo.closeAll(true);
+    _modalElem.id = _modalIdName;
+    _bodyElem.appendChild(_modalElem);
+    _modalElem.onclick = function (event) {
+        if (event.target == _modalElem) {
+            window.jbmoApi.closeAll(true);
         }
-    });
+    };
 
     // what modal close need to do
     var _closeModal = function () {
-        _$modal.removeClass(_activeClassname);
-        _$body.removeClass(_noScrollClassname);
+        _removeClass(_modalElem, _activeClassname);
+        _removeClass(_bodyElem, _noScrollClassname);
     };
 
     // get all actived modal containers
     var _getActivedContainers = function () {
-        return _$modal.find("." + _containerClassname + "." + _activeClassname);
+        return document.querySelectorAll("." + _containerClassname + "." + _activeClassname);
     };
 
-    $.jbmo = {
+    var _defaultSetting = {
+        closeButton: true,
+        modalLock: false,
+        onShow: null,
+        onDestroy: null,
+        onClose: null,
+        containerClassname: ""
+    };
 
-        // create a modal, and return its api
-        create: function (content, setting) {
+    window.jbmo = function (content, setting) {
+        var _containerElem = document.createElement("div"),
+            _setting = _extend(_defaultSetting, setting);
 
-            var _defaultSetting = {
-                    closeButton: true,
-                    modalLock: false,
-                    onShow: null,
-                    onDestroy: null,
-                    onClose: null,
-                    containerClassname: ""
-                },
-                _$container = null,
-                _setting = $.extend(true, _defaultSetting, setting);
+        // make a container
+        _containerElem.className = _containerClassname + " " + _setting.containerClassname;
+        if (typeof content == "string") {
+            _containerElem.innerHTML = content;
+        } else if (typeof content.tagName != "undefined") {
+            _containerElem.appendChild(content);
+        } else {
+            throw new "jbmo: invalid content."
+        }
+        _modalElem.appendChild(_containerElem);
 
-            // make a container
-            var container = document.createElement("div");
-            container.className = _containerClassname + " " + _setting.containerClassname;
-            if (_setting.closeButton) {
-                var closeButton = document.createElement("div");
-                closeButton.className = _closeButtonClassname;
-                container.appendChild(closeButton);
-                $(closeButton).click(function () {
-                    api.close();
-                });
-            }
-            _$container = $(container).append(content);
-            _$modal.append(_$container);
-
-            var api = {
-
-                show: function () {
-                    _$container.addClass(_activeClassname);
-                    _$modal.addClass(_activeClassname);
-                    _$body.addClass(_noScrollClassname);
-
-                    if (typeof _setting.onShow == "function") {
-                        _setting.onShow();
-                    }
-                },
-
-                close: function (closeByModal) {
-                    if (_setting.modalLock && closeByModal) {
-                        return;
-                    }
-
-                    _$container.removeClass(_activeClassname);
-                    if (typeof _setting.onClose == "function") {
-                        _setting.onClose();
-                    }
-
-                    if (!_getActivedContainers().length) {
-                        _closeModal();
-                    }
-                },
-
-                destroy: function () {
-                    _$container.remove();
-                    _jbmos = $.grep(_jbmos, function (_api, _index) {
-                        return _api !== api;
-                    });
-
-                    if (typeof _setting.onDestroy == "function") {
-                        _setting.onDestroy();
-                    }
-
-                    if (!_getActivedContainers().length) {
-                        _closeModal();
-                    }
-                }
-
+        if (_setting.closeButton) {
+            var _closeButtonElem = document.createElement("div");
+            _closeButtonElem.className = _closeButtonClassname;
+            _closeButtonElem.onclick = function () {
+                _close();
             };
+            _containerElem.appendChild(_closeButtonElem);
+        }
 
-            _jbmos.push(api);
+        var _show = function () {
+            _addClass(_containerElem, _activeClassname);
+            _addClass(_modalElem, _activeClassname);
+            _addClass(_bodyElem, _noScrollClassname);
 
-            return api;
-        },
+            if (typeof _setting.onShow == "function") {
+                _setting.onShow();
+            }
+        };
 
-        // get all api in jbmo modal list
+        var _close = function (closeByModal) {
+            if (_setting.modalLock && closeByModal) {
+                return;
+            }
+
+            _removeClass(_containerElem, _activeClassname);
+
+            if (typeof _setting.onClose == "function") {
+                _setting.onClose();
+            }
+
+            if (!_getActivedContainers().length) {
+                _closeModal();
+            }
+        };
+
+        var _destroy = function () {
+            _modalElem.removeChild(_containerElem);
+
+            if (typeof _setting.onDestroy == "function") {
+                _setting.onDestroy();
+            }
+
+            if (!_getActivedContainers().length) {
+                _closeModal();
+            }
+        };
+
+        var _api = {
+            show: _show,
+            close: _close,
+            destroy: _destroy
+        };
+
+        _jbmos.push(_api);
+        return _api;
+
+    };
+
+    window.jbmoApi = {
         getAll: function () {
             return _jbmos;
         },
-
-        // show all modal
         showAll: function () {
-            $(_jbmos).each(function () {
-                this.show();
-            });
+            for (var i = 0, len = _jbmos.length; i < len; i += 1) {
+                _jbmos[i].show();
+            }
         },
-
-        // close all modal
         closeAll: function (closeByModal) {
-            $(_jbmos).each(function () {
-                this.close(closeByModal);
-            });
+            for (var i = 0, len = _jbmos.length; i < len; i += 1) {
+                _jbmos[i].close(closeByModal);
+            }
         },
-
-        // destroy all modal
-        destroyAll: function () {
-            $(_jbmos).each(function () {
-                this.destroy();
-            });
+        destroy: function () {
+            for (var i = 0, len = _jbmos.length; i < len; i += 1) {
+                _jbmos[i].close(closeByModal);
+            }
         }
-
     };
+};
 
-});
+_domReady(_init);
 
-}(jQuery, window, document));
+}(window, document));

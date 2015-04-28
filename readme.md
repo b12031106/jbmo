@@ -1,29 +1,26 @@
 # jbmo
 
-### a super normal javascript modal plugin depend on jQuery
+### a simple modal plugin
 
 ### Step by Step
 
 #### insert this html
 
 ```html
-<!-- first, load jQuery -->
-<script type="text/javascript" src="//code.jquery.com/jquery-1.8.3.min.js"></script>
-
 <!-- then load jbmo.js and jbmo.css -->
 <script type="text/javascript" src="jbmo.js"></script>
 <link type="text/css" rel="stylesheet" href="jbmo.css">
 ```
 
-#### Then use jbmo LIKE A BOUSE
+#### Then create jbmo object by string or dom element
 
 ```js
 
 // create jbmo modal object
-var likeabouse = $.jbmo.create("LIKE A BOUSE");
+var jbmoObj = new jbmo("Just a string.");
 
-// and show it on your screen LIKE A BOUSE
-likeabouse.show();
+// and show it on your screen
+jbmoObj.show();
 
 ```
 
@@ -31,7 +28,7 @@ likeabouse.show();
 
 ```js
 
-var likeabouse = $.jbmo.create("LIKE A BOUSE", {
+var jbmoObj = new jbmo("LIKE A BOUSE", {
 
 	// decide jbmo modal will generate a close button or not
 	closeButton: true,
@@ -55,7 +52,7 @@ var likeabouse = $.jbmo.create("LIKE A BOUSE", {
 	},
 
 	// will add this classname on jbmo modal container
-	containerClassname: "LIKEABOUSE" 
+	containerClassname: "specific-classname"
 });
 
 ```
@@ -64,19 +61,18 @@ var likeabouse = $.jbmo.create("LIKE A BOUSE", {
 
 ```js
 
-// create a jbmo object by $.jbmo.create, you can create by element, string or jQuery object
-var likeabouseSTRING = $.jbmo.create("I am a string... but LIKE A BOUSE");
-var likeabouseELEMENT = $.jbmo.create(document.getElementById("like-a-bouse"));
-var likeabouseJQUERY = $.jbmo.create($(".like-a-BOUSE"));
+// create a jbmo object, you can create by element or just string
+var jbmoSTRING = new jbmo("I am a string...");
+var jbmoELEMENT = new jbmo(document.getElementById("element-id"));
 
 // use .show() to show modal
-likeabouseSTRING.show();
+jbmoSTRING.show();
 
 // use .close() to close modal
-likeabouseSTRING.close();
+jbmoSTRING.close();
 
 // use .destroy() to destroy jbmo object
-likeabouseSTRING.destroy();
+jbmoSTRING.destroy();
 
 ```
 
@@ -85,16 +81,16 @@ likeabouseSTRING.destroy();
 ```js
 
 // this will return all created jbmo objects
-var allJbmos = $.jbmo.getAll();
+var allJbmos = jbmoApi.getAll();
 
 // this will show all jbmo modal
-$.jbmo.showAll();
+jbmoApi.showAll();
 
 // this will close all jbmo modal
-$.jbmo.closeAll();
+jbmoApi.closeAll();
 
 // this will destroy all jbmo modal
-$.jbmo.destroyAll();
+jbmoApi.destroyAll();
 
 ```
 
