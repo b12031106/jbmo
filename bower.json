@@ -1,0 +1,26 @@
+{
+  "name": "jbmo",
+  "main": [
+    "jbmo.js",
+    "jbmo.css"
+  ],
+  "homepage": "https://github.com/b12031106/jbmo",
+  "authors": [
+    "Justin Hsu <b12031106@gmail.com>"
+  ],
+  "description": "a very normal modal plugin",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "modal"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
