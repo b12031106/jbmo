@@ -96,7 +96,8 @@ var _init = function () {
 
     window.jbmo = function (content, setting) {
         var _containerElem = document.createElement("div"),
-            _setting = _extend(_defaultSetting, setting);
+            _setting = _extend(_defaultSetting, setting),
+            _api;
 
         // make a container
         _containerElem.className = _containerClassname + " " + _setting.containerClassname;
@@ -145,7 +146,15 @@ var _init = function () {
         };
 
         var _destroy = function () {
+            var apiIndex = _jbmos.indexOf(_api);
+
+            // remove from dom
             _modalElem.removeChild(_containerElem);
+
+            // remove from caches
+            if (apiIndex !== -1) {
+                _jbmos.splice(apiIndex, 1);
+            }
 
             if (typeof _setting.onDestroy == "function") {
                 _setting.onDestroy();
@@ -156,7 +165,7 @@ var _init = function () {
             }
         };
 
-        var _api = {
+        _api = {
             show: _show,
             close: _close,
             destroy: _destroy
@@ -183,7 +192,7 @@ var _init = function () {
         },
         destroy: function () {
             for (var i = 0, len = _jbmos.length; i < len; i += 1) {
-                _jbmos[i].close(closeByModal);
+                _jbmos[i].destroy();
             }
         }
     };
