@@ -190,7 +190,7 @@ var _init = function () {
             }
         },
         destroy: function () {
-            for (var i = 0, len = _jbmos.length; i < len; i += 1) {
+            for (var i = _jbmos.length - 1; i >= 0; i -= 1) {
                 _jbmos[i].destroy();
             }
         }
