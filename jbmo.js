@@ -61,7 +61,6 @@ var _init = function () {
         _modalIdName = "jbmo-modal",
         _containerClassname = "jbmo-container",
         _closeButtonClassname = "jbmo-close",
-        _modalLockClassname = "jbmo-lock",
         _bodyElem = document.body,
         _modalElem = document.createElement("div");
 
